@@ -1,0 +1,9 @@
+command:
+  - "node"
+  - "app.js"
+
+env:
+  - name: "SERVING_ENDPOINT"
+    valueFrom: "serving-endpoint"
+  - name: PORT
+    value: "8000"

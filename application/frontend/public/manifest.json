@@ -1,0 +1,10 @@
+{
+  "short_name": "Patient Journey",
+  "name": "Patient Journey Assistant",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#FF3621",
+  "background_color": "#ffffff"
+}
+
