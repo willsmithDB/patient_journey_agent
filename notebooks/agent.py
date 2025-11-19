@@ -33,7 +33,7 @@ set_uc_function_client(client)
 # Define your LLM endpoint and system prompt
 ############################################
 
-LLM_ENDPOINT_NAME = "databricks-claude-3-7-sonnet"
+LLM_ENDPOINT_NAME = "databricks-claude-sonnet-4-5"
 # LLM_ENDPOINT_NAME = "databricks-meta-llama-3-3-70b-instruct"
 llm = ChatDatabricks(endpoint=LLM_ENDPOINT_NAME)
 

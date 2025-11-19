@@ -18,9 +18,24 @@
 
 # COMMAND ----------
 
+from IPython.display import Image, display
+
+display(Image("../assets/images/stategraph.png", width=800))
+display(Image("../assets/images/architecture_diagram.png", width=800))
+
+# COMMAND ----------
+
 # MAGIC %pip install -qqqq -U -r requirements.txt
 # MAGIC
 # MAGIC dbutils.library.restartPython()
+
+# COMMAND ----------
+
+# DBTITLE 1,For use with serverless compute
+# Uncomment if you are using serverless compute
+# %pip uninstall -y databricks-connect pyspark pyspark-connect
+# %pip install databricks-connect
+# %restart_python
 
 # COMMAND ----------
 
@@ -73,7 +88,7 @@
 # MAGIC # Define your LLM endpoint and system prompt
 # MAGIC ############################################
 # MAGIC
-# MAGIC LLM_ENDPOINT_NAME = "databricks-claude-3-7-sonnet"
+# MAGIC LLM_ENDPOINT_NAME = "databricks-claude-sonnet-4-5"
 # MAGIC # LLM_ENDPOINT_NAME = "databricks-meta-llama-3-3-70b-instruct"
 # MAGIC llm = ChatDatabricks(endpoint=LLM_ENDPOINT_NAME)
 # MAGIC
@@ -101,7 +116,7 @@
 # MAGIC
 # MAGIC #You can use UDFs in Unity Catalog as agent tools
 # MAGIC # HealthVerity patient journey tools
-# MAGIC uc_tool_names = ["CATALOG.SCHEMA.*"]
+# MAGIC uc_tool_names = ["users.will_smith.*"]
 # MAGIC uc_toolkit = UCFunctionToolkit(function_names=uc_tool_names)
 # MAGIC tools.extend(uc_toolkit.tools)
 # MAGIC
@@ -260,6 +275,15 @@ experiment_id = config['experiment_id']
 
 # COMMAND ----------
 
+# DBTITLE 1,Draw Mermaid Diagram
+from IPython.display import Image, display
+from langchain_core.runnables.graph import CurveStyle, MermaidDrawMethod, NodeStyles
+from agent import agent
+
+display(Image(agent.get_graph().draw_mermaid_png(), width=500))
+
+# COMMAND ----------
+
 import mlflow
 mlflow.set_experiment(experiment_id=experiment_id)
 
@@ -338,10 +362,17 @@ with mlflow.start_run():
 
 # COMMAND ----------
 
+# DBTITLE 1,Turn off autologging if using serverless
+# Uncomment if using serverless
+# import mlflow
+# mlflow.autolog(disable=True)
+
+# COMMAND ----------
+
 mlflow.models.predict(
     model_uri=f"runs:/{logged_agent_info.run_id}/agent",
     input_data={"messages": [{"role": "user", "content": f"What enrollment information do you have for patient {patient_id}?"}]},
-    env_manager="uv",
+    env_manager="local", # use uv if using serverless. Use local for interactive compute
 )
 
 # COMMAND ----------
@@ -376,7 +407,7 @@ client.set_registered_model_alias(model_uc_name, "Champion", uc_registered_model
 
 # DBTITLE 1,Uncomment to create endpoint if needed
 from databricks import agents
-# agents.deploy(model_uc_name, uc_registered_model_info.version, tags = {"RemoveAfter": "10-31-2025"})
+agents.deploy(model_uc_name, uc_registered_model_info.version, tags = {"RemoveAfter": "12-31-2025"})
 
 # COMMAND ----------
 
