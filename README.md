@@ -4,6 +4,12 @@ A comprehensive healthcare AI assistant built on Databricks using HealthVerity's
 
 ## DISCLAIMER - this code is for reference and not an official Databricks asset. There are no assurances nor guarantees on this for working in any environment. Use for educational purposes only. See LICENSE for more details. 
 
+## Databricks Runtime - **16.4 Machine Learning LTS (includes Apache Spark 3.5.2, Scala 2.13)**
+
+Additional compatibility are currently being tested. 
+
+If you see any errors please rollback to this runtime. 
+
 ## 🏥 Overview
 
 The Patient Journey Assistant is designed to follow the workflow of a healthcare provider analyzing patient data to make informed clinical decisions. It enables healthcare professionals to quickly understand a patient's healthcare journey across medical claims, pharmacy data, diagnoses, and procedures using HealthVerity's real-world healthcare dataset.
